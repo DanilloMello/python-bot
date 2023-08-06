@@ -3,29 +3,40 @@ import pyautogui
 import time
 import keyboard
 import random
-import win32api, win32con
-import threading
+from pynput.keyboard import Listener, Key
+from classes import RepeatebleTimer
 
-def health():
-    while keyboard.is_pressed('z') == False:
+def health(times):
         pic = pyautogui.screenshot(region=(0,0,960,505))
         r,g,b = pic.getpixel((213,47))
         if g != 255:
             keyboard.press_and_release('1')
-            time.sleep(5)
-def spell():
-    while keyboard.is_pressed('z') == False:
-        keyboard.press_and_release('r')
-        time.sleep(60 + random.randint(0, 9))
-def food():
-    while keyboard.is_pressed('z') == False:
-        keyboard.press_and_release('4')
-        time.sleep(120 + random.randint(0, 9))
+def spell(times):
+    keyboard.press_and_release('r')
 
-job1 = threading.Thread(target=health)
-job2 = threading.Thread(target=spell)
-job3 = threading.Thread(target=food)
+def food(times):
+    keyboard.press_and_release('4')
 
-job1.start()
-job2.start()
-job3.start()
+timers = []
+
+def start():
+    rt = RepeatebleTimer(120 + random.randint(0, 9), food, [0])
+    rt2 = RepeatebleTimer(60 + random.randint(0, 9), spell, [0])
+    rt3 = RepeatebleTimer(6 + random.randint(0, 9), health, [0])
+    timers.extend([rt, rt2, rt3])
+
+    [t.start() for t in timers]    
+
+def stopped(key):
+    print(key)
+    if Key.tab == key:
+        [t.cancel() for t in timers]
+        return False
+
+def manager():
+    start()
+
+manager()
+
+with Listener(on_press= stopped) as listener:
+    listener.join()
