@@ -17,8 +17,8 @@ import win32gui
 
 MSGBOX_TITLE = 'Mirage Realms'
 HEALTH_PIXEL = 75
-HEALTH_POSITION = [161,56] 
-SPELL_POSITION = [237,385]
+POSITIONS_FUNCTIONS = (['spell',[237,385]], ['health',[163,45]], ['food',[214,463]])
+
 
 def callback(hwnd, custom_list):
     custom_list.append((hwnd, win32gui.GetWindowText(hwnd)))
@@ -37,22 +37,13 @@ def getWindowsSizeAndPosition():
         resizeWindow(windowsMatched[i], windowsPositionAndSize[i])
     return [windowsMatched, windowsPositionAndSize]
 
-def getSpellPixels(spp):
+def getPixels(spp, position):
     y = 0
+    print(position)
     pixels = []
     for ps in spp:        
         ss = pyautogui.screenshot(region= (ps[0],y,ps[2],ps[3]))
-        g = ss.getpixel((SPELL_POSITION[0],SPELL_POSITION[1]))
-        pixels.append(g[1])
-        y =+ ps[3]
-    return pixels
-
-def getHealthPixels(spp):
-    y = 0
-    pixels = []
-    for ps in spp:        
-        ss = pyautogui.screenshot(region= (ps[0],y,ps[2],ps[3]))
-        g = ss.getpixel((HEALTH_POSITION[0],HEALTH_POSITION[1]))
+        g = ss.getpixel(position[0], position[1])
         pixels.append(g[1])
         y =+ ps[3]
     return pixels
@@ -65,23 +56,35 @@ def getWindowSizeByResolution():
         resolution.extend([583,509])
     return resolution
     
-def health(times, wspp):
+def health(times, wspp, position):
     for i in range(len(wspp[0])):
         w = wspp[0][i]
-        pixelTarget = getHealthPixels(wspp[1])
-        if pixelTarget[i] in range(70,80):
+        pixelTarget = getPixels(wspp[1], position)
+        if pixelTarget[i] in range(70,95):
            ActivateWindow(w)
            keyboard.press_and_release('1')
         time.sleep(random.randint(0,2))
             
-def spell(times, wspp):
-    pixelsSource = getSpellPixels(wspp[1])
+def spell(times, wspp, position):
+    pixelsSource = getPixels(wspp[1], position)
     for i in range(len(wspp[0])):
         w = wspp[0][i]
-        pixelTarget = getSpellPixels(wspp[1])
+        pixelTarget = getPixels(wspp[1], position)
         if pixelTarget[i] in pixelsSource:
            ActivateWindow(w)
            keyboard.press_and_release('r')
+        time.sleep(random.randint(0,5))
+
+def food(times, wspp, position):
+    pixelsSource = getPixels(wspp[1], position)
+    for i in range(len(wspp[0])):
+        w = wspp[0][i]
+        pixelTarget = getPixels(wspp[1], position)
+        if pixelTarget[i] in pixelsSource:
+           ActivateWindow(w)
+           for i in range(4):          
+            keyboard.press_and_release('4')
+            time.sleep(0.7)
         time.sleep(random.randint(0,5))
 
 def resizeWindow(window, positionAndSize):
@@ -94,20 +97,20 @@ def ActivateWindow(window):
     shell.SendKeys('%')
     win32gui.SetForegroundWindow(window)
 
-def food(times, prints):
-    for print in prints:      
-        pixel = print.getpixel((213,47))
-        if pixel[1] != 255:
-            keyboard.press_and_release('4')
 
 timers = []
 
+def filterPosition(funcao):
+    for position in POSITIONS_FUNCTIONS:
+        if position[0] == funcao:
+            return position[1]
+        
 def start():
     wspp = getWindowsSizeAndPosition()
-    rt = RepeatebleTimer(120 + random.randint(0, 9), food, [0, wspp])
-    rt2 = RepeatebleTimer(60 + random.randint(0, 5), spell, [0, wspp])
-    rt3 = RepeatebleTimer(6 + random.randint(0, 2), health, [0, wspp])
-    timers.extend([rt2,rt3])
+    foodThread = RepeatebleTimer(120 + random.randint(0, 9), food, [0, wspp, filterPosition("food")])
+    spellThread = RepeatebleTimer(60 + random.randint(0, 5), spell, [0, wspp, filterPosition("spell")])
+    healthThread = RepeatebleTimer(6 + random.randint(0, 2), health, [0, wspp, filterPosition("health")])
+    timers.extend([spellThread,healthThread, foodThread])
 
     [t.start() for t in timers]    
 
@@ -121,6 +124,8 @@ def manager():
     start()
 
 manager()
+
+            
 
 with Listener(on_press= stopped) as listener:
     listener.join()
