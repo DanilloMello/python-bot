@@ -66,11 +66,10 @@ def getWindowSizeByResolution():
     return resolution
     
 def health(times, wspp):
-    pixelsSource = HEALTH_PIXEL
     for i in range(len(wspp[0])):
         w = wspp[0][i]
         pixelTarget = getHealthPixels(wspp[1])
-        if pixelTarget[i] == pixelsSource:
+        if pixelTarget[i] in range(70,80):
            ActivateWindow(w)
            keyboard.press_and_release('1')
         time.sleep(random.randint(0,2))
@@ -114,7 +113,7 @@ def start():
 
 def stopped(key):
     print(key)
-    if Key.tab == key:
+    if Key.alt_gr== key:
         [t.cancel() for t in timers]
         return False
 
