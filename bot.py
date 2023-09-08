@@ -15,13 +15,23 @@ from classes import RepeatebleTimer
 
 import win32gui
 
-MSGBOX_TITLE = 'Mirage Realms'
+MSGBOX_TITLE = 'Mirage Realms - Early'
 HEALTH_PIXEL = 75
-POSITIONS_FUNCTIONS = (['spell',[237,385]], ['health',[163,45]], ['food',[214,463]])
-
+POSITIONS_FUNCTIONS = (['spell',[237,385]], ['health',[145,57]], ['food',[214,463]])
+# 145,57
 
 def callback(hwnd, custom_list):
     custom_list.append((hwnd, win32gui.GetWindowText(hwnd)))
+
+# TODO: REFACTORING BOT
+# INTERFACE FOR ENTRIES
+# ENTRIES WINDOWS SIZE -> 1 / 1 | 2 / 0 
+# CHOOSE HEALTH / MANA -> PERCENTAGEM, TYPE OF POT, MAX OF SPOT 6 AND NOT REPEATEBLE SPOT 
+# CHOOSE FOOD -> TYPE OF FOOD AND SPOT, MAX OF 6 AND NOT REPEATEBLE SPOT
+# CHOOSE SPELL -> TYPE OF SPELL AND SPOT, MAX OF 3 AND NOT REPEATEBLE SPOT
+# MODE TYPE -> TRAINING AND FIGHTING 
+## TRAINING -> CHECK IF HAS TARGET WHEN TRIGGETED FOOD AND SPELL AND HEATH
+## FIGHTING -> NONE FOR NOW
 
 def getWindowsSizeAndPosition():
     windowsMatched = []
@@ -39,11 +49,10 @@ def getWindowsSizeAndPosition():
 
 def getPixels(spp, position):
     y = 0
-    print(position)
     pixels = []
     for ps in spp:        
         ss = pyautogui.screenshot(region= (ps[0],y,ps[2],ps[3]))
-        g = ss.getpixel(position[0], position[1])
+        g = ss.getpixel((position[0], position[1]))
         pixels.append(g[1])
         y =+ ps[3]
     return pixels
@@ -97,7 +106,6 @@ def ActivateWindow(window):
     shell.SendKeys('%')
     win32gui.SetForegroundWindow(window)
 
-
 timers = []
 
 def filterPosition(funcao):
@@ -115,7 +123,6 @@ def start():
     [t.start() for t in timers]    
 
 def stopped(key):
-    print(key)
     if Key.alt_gr== key:
         [t.cancel() for t in timers]
         return False
