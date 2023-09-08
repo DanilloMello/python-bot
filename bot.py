@@ -15,10 +15,12 @@ from classes import RepeatebleTimer
 
 import win32gui
 
-MSGBOX_TITLE = 'Mirage Realms'
+MSGBOX_TITLE = 'Mirage Realms - Early'
 HEALTH_PIXEL = 75
-POSITIONS_FUNCTIONS = (['spell',[237,385]], ['health',[163,45]], ['food',[214,463]])
-
+POSITIONS_FUNCTIONS = (['spell',[237,385]], ['health',[141,49]], ['food',[214,463]])
+# 141,49
+# 163,45
+# 112,43
 
 def callback(hwnd, custom_list):
     custom_list.append((hwnd, win32gui.GetWindowText(hwnd)))
@@ -39,11 +41,10 @@ def getWindowsSizeAndPosition():
 
 def getPixels(spp, position):
     y = 0
-    print(position)
     pixels = []
     for ps in spp:        
         ss = pyautogui.screenshot(region= (ps[0],y,ps[2],ps[3]))
-        g = ss.getpixel(position[0], position[1])
+        g = ss.getpixel((position[0], position[1]))
         pixels.append(g[1])
         y =+ ps[3]
     return pixels
@@ -82,7 +83,7 @@ def food(times, wspp, position):
         pixelTarget = getPixels(wspp[1], position)
         if pixelTarget[i] in pixelsSource:
            ActivateWindow(w)
-           for i in range(4):          
+           for i in range(random.randint(1,3)):          
             keyboard.press_and_release('4')
             time.sleep(0.7)
         time.sleep(random.randint(0,5))
@@ -96,7 +97,6 @@ def ActivateWindow(window):
     shell = win32com.client.Dispatch("WScript.Shell", pythoncom.CoInitialize())
     shell.SendKeys('%')
     win32gui.SetForegroundWindow(window)
-
 
 timers = []
 
@@ -113,19 +113,16 @@ def start():
     timers.extend([spellThread,healthThread, foodThread])
 
     [t.start() for t in timers]    
-
+ 
 def stopped(key):
-    print(key)
-    if Key.alt_gr== key:
+    if Key.alt_gr == key:
         [t.cancel() for t in timers]
         return False
 
 def manager():
     start()
 
-manager()
-
-            
+manager()  
 
 with Listener(on_press= stopped) as listener:
     listener.join()
