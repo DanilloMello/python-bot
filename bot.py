@@ -11,7 +11,7 @@ import pythoncom
 
 from win32api import GetSystemMetrics
 from pynput.keyboard import Listener, Key
-from classes import RepeatebleTimer
+from dependencies import RepeatebleTimer
 
 import win32gui
 
