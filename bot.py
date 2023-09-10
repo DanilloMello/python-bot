@@ -11,7 +11,7 @@ import pythoncom
 
 from win32api import GetSystemMetrics
 from pynput.keyboard import Listener, Key
-from dependencies import RepeatebleTimer
+from RepeatebleTimer import RepeatebleTimer
 
 import win32gui
 
@@ -26,7 +26,7 @@ def callback(hwnd, custom_list):
 # TODO: REFACTORING BOT
 # INTERFACE FOR ENTRIES
 # ENTRIES WINDOWS SIZE -> 1 / 1 | 2 / 0 
-# CHOOSE HEALTH / MANA -> PERCENTAGEM, TYPE OF POT, MAX OF SPOT 6 AND NOT REPEATEBLE SPOT 
+# CHOOSE HEALTH / MANA -> PERCENTAGEM, MAX OF SPOT 6 AND NOT REPEATEBLE SPOT 
 # CHOOSE FOOD -> TYPE OF FOOD AND SPOT, MAX OF 6 AND NOT REPEATEBLE SPOT
 # CHOOSE SPELL -> TYPE OF SPELL AND SPOT, MAX OF 3 AND NOT REPEATEBLE SPOT
 # MODE TYPE -> TRAINING AND FIGHTING 
