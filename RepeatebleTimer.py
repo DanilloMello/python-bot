@@ -13,3 +13,4 @@ class RepeatebleTimer(Timer):
             while not self.finished.wait(self.interval) & i != self.args :
                 self.function(*self.args,**self.kwargs)
                 i += 1
+

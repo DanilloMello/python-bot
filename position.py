@@ -7,6 +7,7 @@ print(pyautogui.displayMousePosition())
 
 
 221,381-179
+125,56
 229,890-198
 237,385
 112,43

@@ -11,19 +11,27 @@ import pythoncom
 
 from win32api import GetSystemMetrics
 from pynput.keyboard import Listener, Key
-from classes import RepeatebleTimer
+from RepeatebleTimer import RepeatebleTimer
 
 import win32gui
 
 MSGBOX_TITLE = 'Mirage Realms - Early'
 HEALTH_PIXEL = 75
-POSITIONS_FUNCTIONS = (['spell',[237,385]], ['health',[141,49]], ['food',[214,463]])
-# 141,49
-# 163,45
-# 112,43
+POSITIONS_FUNCTIONS = (['spell',[237,385]], ['health',[145,57]], ['food',[214,463]])
+# 145,57
 
 def callback(hwnd, custom_list):
     custom_list.append((hwnd, win32gui.GetWindowText(hwnd)))
+
+# TODO: REFACTORING BOT
+# INTERFACE FOR ENTRIES
+# ENTRIES WINDOWS SIZE -> 1 / 1 | 2 / 0 
+# CHOOSE HEALTH / MANA -> PERCENTAGEM, MAX OF SPOT 6 AND NOT REPEATEBLE SPOT 
+# CHOOSE FOOD -> TYPE OF FOOD AND SPOT, MAX OF 6 AND NOT REPEATEBLE SPOT
+# CHOOSE SPELL -> TYPE OF SPELL AND SPOT, MAX OF 3 AND NOT REPEATEBLE SPOT
+# MODE TYPE -> TRAINING AND FIGHTING 
+## TRAINING -> CHECK IF HAS TARGET WHEN TRIGGETED FOOD AND SPELL AND HEATH
+## FIGHTING -> NONE FOR NOW
 
 def getWindowsSizeAndPosition():
     windowsMatched = []
@@ -115,7 +123,7 @@ def start():
     [t.start() for t in timers]    
  
 def stopped(key):
-    if Key.alt_gr == key:
+    if Key.alt_gr== key:
         [t.cancel() for t in timers]
         return False
 
