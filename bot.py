@@ -17,8 +17,10 @@ import win32gui
 
 MSGBOX_TITLE = 'Mirage Realms - Early'
 HEALTH_PIXEL = 75
-POSITIONS_FUNCTIONS = (['spell',[237,385]], ['health',[145,57]], ['food',[214,463]])
-# 145,57
+POSITIONS_FUNCTIONS = (['spell',[237,385]], ['health',[141,49]], ['food',[214,463]])
+# 141,49
+# 163,45
+# 112,43
 
 def callback(hwnd, custom_list):
     custom_list.append((hwnd, win32gui.GetWindowText(hwnd)))
@@ -28,7 +30,7 @@ def callback(hwnd, custom_list):
 # ENTRIES WINDOWS SIZE -> 1 / 1 | 2 / 0 
 # CHOOSE HEALTH / MANA -> PERCENTAGEM, MAX OF SPOT 6 AND NOT REPEATEBLE SPOT 
 # CHOOSE FOOD -> TYPE OF FOOD AND SPOT, MAX OF 6 AND NOT REPEATEBLE SPOT
-# CHOOSE SPELL -> TYPE OF SPELL AND SPOT, MAX OF 3 AND NOT REPEATEBLE SPOT
+# CHOOSE SPELL -> TYPE OF SPELL AND SPOT, MAX OF 3 AND NOT REPEATEBLE SPOT | VERIFY MANA FOR PRIORITY SPELL
 # MODE TYPE -> TRAINING AND FIGHTING 
 ## TRAINING -> CHECK IF HAS TARGET WHEN TRIGGETED FOOD AND SPELL AND HEATH
 ## FIGHTING -> NONE FOR NOW
@@ -133,4 +135,4 @@ def manager():
 manager()  
 
 with Listener(on_press= stopped) as listener:
-    listener.join()
+    listener.join() 

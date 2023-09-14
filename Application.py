@@ -19,7 +19,7 @@ class Application(Tk.Frame):
 
 
     def button(self, frame, title, action):
-        button = Tk.Button(frame)
+        button = Tk.Button(frame) 
         button["text"] = title
         button["font"] = (Const.FONTS_DEFAULT_FAMILY, Const.FONTS_DEFAULT_SIZE)
         button["width"] = 5
