@@ -91,7 +91,7 @@ def food(times, wspp, position):
         pixelTarget = getPixels(wspp[1], position)
         if pixelTarget[i] in pixelsSource:
            ActivateWindow(w)
-           for i in range(4):          
+           for i in range(random.randint(1,3)):          
             keyboard.press_and_release('4')
             time.sleep(0.7)
         time.sleep(random.randint(0,5))
@@ -121,7 +121,7 @@ def start():
     timers.extend([spellThread,healthThread, foodThread])
 
     [t.start() for t in timers]    
-
+ 
 def stopped(key):
     if Key.alt_gr== key:
         [t.cancel() for t in timers]
@@ -130,9 +130,7 @@ def stopped(key):
 def manager():
     start()
 
-manager()
-
-            
+manager()  
 
 with Listener(on_press= stopped) as listener:
     listener.join()

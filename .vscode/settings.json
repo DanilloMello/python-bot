@@ -1,5 +1,6 @@
 {
     "python.analysis.extraPaths": [
         "./modulos"
-    ]
+    ],
+    "workbench.colorTheme": "Dracula Soft"
 }
