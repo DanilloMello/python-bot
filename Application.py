@@ -10,29 +10,20 @@ class Application(tk.Frame):
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self.parent = parent
         
-        self.presets(self.parent)
+        self.windowFrame = self.windowPresets(self.parent)
+        self.windowFrame.pack(padx=10, pady=10)
 
-        self.buttonDone = self.button(self.windowFrame, "Done", self.windowFrame.quit)
-        self.buttonDone.pack(padx=10, pady=10)
-
-        self.buttonDone = self.button(self.windowFrame, "Done", self.windowFrame.quit)
-        self.buttonDone.pack(padx=10, pady=10)        
-
-        self.presetFrame = tk.Frame(self.parent)
-        self.executionFrame = tk.Frame(self.parent)
-
-    def presets(self, parent):
+    def windowPresets(self, parent):
         windowsPresetsImg = [
             (tk.PhotoImage(file="windows_presets_02.png"), self.presetsConfig(c.WINDOW_ONE_THIRD_SIZE))
         ]        
-
         self.windowFrame = self.frame(parent)
         for img, fn in windowsPresetsImg:
-            self.radioButton = tk.Radiobutton(
-                image= img,
-                command= fn
-            )
-        self.windowFrame.pack(padx=20, pady=20)
+            self.radioButtonWindow = self.radioButton(self.windowFrame, img, fn)
+            self.radioButtonWindow.pack(padx=10, pady=10)
+        return self.windowFrame
+            
+        
 
     def presetsConfig(self, windowSize):
         ## discover the resolution screen
@@ -40,6 +31,28 @@ class Application(tk.Frame):
         screenResolution.extend([wm(0), wm(1)])
         if screenResolution == c.FULL_HD_RESOLUTION:
             print("TESTE")
+    
+    def getWindowsSizeAndPosition():
+        windowsMatched = []
+        win32gui.EnumWindows(callback, windows := [])
+        for window, title in windows:
+            if search(MSGBOX_TITLE, title):
+                windowsMatched.append(window)  
+        windowSize = getWindowSizeByResolution()
+        windowsPositionAndSize = []
+        windowsPositionAndSize.extend([[0,0,windowSize[0],windowSize[1]],
+                                    [0,0 + windowSize[1],windowSize[0],windowSize[1]]])
+        for i in range(len(windowsMatched)):
+            resizeWindow(windowsMatched[i], windowsPositionAndSize[i])
+        return [windowsMatched, windowsPositionAndSize]
+    
+    def getWindowSizeByResolution():
+        screenWidth = GetSystemMetrics(0)
+        screenHeight = GetSystemMetrics(1)
+        resolution = []
+        if screenWidth == 1920 and screenHeight == 1080:
+            resolution.extend([583,509])
+        return resolution
 
     def button(self, frame, title, action):
         button = tk.Button(frame) 
@@ -48,6 +61,12 @@ class Application(tk.Frame):
         button["width"] = 10
         button["command"] = action
         return button
+    
+    def radioButton(self, frame, img, fn):
+        radioButton = tk.Radiobutton(frame) 
+        radioButton["image"] = img
+        radioButton["command"] = fn
+        return radioButton
     
     def frame(self, parent):
         frame = tk.Frame(parent)
