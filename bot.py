@@ -17,7 +17,7 @@ import win32gui
 
 MSGBOX_TITLE = 'Mirage Realms - Early'
 HEALTH_PIXEL = 75
-POSITIONS_FUNCTIONS = (['spell',[237,385]], ['health',[141,49]], ['food',[214,463]])
+POSITIONS_FUNCTIONS = (['spell',[237,385]], ['health',[163,45]], ['food',[214,463]])
 # 141,49
 # 163,45
 # 112,43
