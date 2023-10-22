@@ -1,6 +1,7 @@
 
 
 ### MIRAGE REALMS ###
+## ASSETS
 ## WINDOWS
 FULL_HD_RESOLUTION = [1920,1080]
 WINDOW_TITLE = 'Mirage Realms - Early'
